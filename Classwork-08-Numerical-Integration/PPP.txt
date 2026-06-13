@@ -1,0 +1,83 @@
+# LIBRARIES
+
+IMPORT math
+
+# INPUT
+
+GET left_endpoint FROM user WITH message "Write the left endpoint of the interval: "
+GET right_endpoint FROM user WITH message "Write the right endpoint of the interval: "
+GET function_expression FROM user WITH message "Write the function to integrate: "
+GET method FROM user WITH message "Write the integration method (LRM/RRM/MRM/TRAP): "
+
+# PROCESS
+
+IF "pi" is in left_endpoint THEN
+REPLACE "pi" with value of math.pi
+left_endpoint ← EVALUATE expression
+ELSE
+left_endpoint ← CONVERT TO decimal
+ENDIF
+
+IF "pi" is in right_endpoint THEN
+REPLACE "pi" with value of math.pi
+right_endpoint ← EVALUATE expression
+ELSE
+right_endpoint ← CONVERT TO decimal
+ENDIF
+
+n ← 1000
+step_size ← (right_endpoint - left_endpoint) / n
+integral ← 0.0
+
+IF method is equal to "LRM" THEN
+
+```
+FOR i FROM 0 TO n - 1 DO
+    x ← left_endpoint + i * step_size
+    fx ← EVALUATE function_expression at x
+    integral ← integral + (fx * step_size)
+ENDFOR
+```
+
+ELSE IF method is equal to "RRM" THEN
+
+```
+FOR i FROM 1 TO n DO
+    x ← left_endpoint + i * step_size
+    fx ← EVALUATE function_expression at x
+    integral ← integral + (fx * step_size)
+ENDFOR
+```
+
+ELSE IF method is equal to "MRM" THEN
+
+```
+FOR i FROM 0 TO n - 1 DO
+    midpoint ← left_endpoint + i * step_size + step_size / 2
+    fx ← EVALUATE function_expression at midpoint
+    integral ← integral + (fx * step_size)
+ENDFOR
+```
+
+ELSE IF method is equal to "TRAP" THEN
+
+```
+left_value ← EVALUATE function_expression at left_endpoint
+right_value ← EVALUATE function_expression at right_endpoint
+
+integral ← (left_value + right_value) / 2
+
+FOR i FROM 1 TO n - 1 DO
+    x ← left_endpoint + i * step_size
+    fx ← EVALUATE function_expression at x
+    integral ← integral + fx
+ENDFOR
+
+integral ← integral * step_size
+```
+
+ENDIF
+
+# OUTPUT
+
+DISPLAY "The approximate integral of " + function_expression + " is " + integral
