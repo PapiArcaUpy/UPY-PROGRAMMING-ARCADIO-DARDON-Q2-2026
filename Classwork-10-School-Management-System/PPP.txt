@@ -1,0 +1,142 @@
+SCHOOL MANAGEMENT SYSTEM
+
+# INPUT
+
+DEFINE users AS dictionary WITH keys: username
+    each value HAS password, role, name
+    role CAN BE "student", "teacher", OR "coordinator"
+    INCLUDE six students, one teacher, one coordinator
+
+DEFINE subjects AS tuple OF subject names
+
+DEFINE grades AS dictionary WITH keys: student username
+    each value HAS a dictionary OF subject → grade
+
+# PROCESS
+
+SET access_granted ← FALSE
+
+WHILE access_granted IS FALSE
+    ASK user FOR username
+    ASK user FOR password
+
+    IF username EXISTS IN users
+        AND password EQUALS users[username][password]
+        THEN
+            SET access_granted ← TRUE
+            SET current_user ← username
+    ELSE
+        PRINT "Invalid username or password."
+    END IF
+END WHILE
+
+SET current_name ← users[current_user][name]
+SET current_role ← users[current_user][role]
+
+# OUTPUT
+
+PRINT "Welcome, " + current_name + " (" + current_role + ")"
+
+# PROCESS
+
+IF current_role EQUALS "student" THEN
+    PRINT "Report Card for " + current_name
+
+    SET passed_subjects ← empty set
+
+    FOR EACH subject IN subjects
+        SET grade ← grades[current_user][subject]
+        PRINT subject + ": " + grade
+
+        IF grade >= 8.0 THEN
+            ADD subject TO passed_subjects
+        END IF
+    END FOR
+
+    SET pending_subjects ← subjects AS set MINUS passed_subjects
+
+    PRINT "Passed subjects: " + passed_subjects
+    PRINT "Pending subjects: " + pending_subjects
+
+ELSE IF current_role EQUALS "teacher" THEN
+
+    PRINT "Student List:"
+
+    FOR EACH username IN users
+        IF users[username][role] EQUALS "student" THEN
+            PRINT username + " - " + users[username][name]
+        END IF
+    END FOR
+
+    SET continue_grading ← TRUE
+
+    WHILE continue_grading IS TRUE
+
+        ASK teacher FOR student
+
+        IF student EXISTS IN grades THEN
+
+            ASK teacher FOR subject
+
+            IF subject EXISTS IN subjects THEN
+
+                ASK teacher FOR new_grade
+
+                PRINT "Current grade: " + grades[student][subject]
+                PRINT "New grade: " + new_grade
+
+                ASK teacher TO confirm (yes/no)
+
+                IF confirmation EQUALS "yes" THEN
+                    SET grades[student][subject] ← new_grade
+                    PRINT "Grade updated."
+                ELSE
+                    PRINT "Change canceled."
+                END IF
+
+            ELSE
+                PRINT "Invalid subject."
+            END IF
+
+        ELSE
+            PRINT "Student not found."
+        END IF
+
+        ASK teacher IF wants to grade another student (yes/no)
+
+        IF answer EQUALS "no" THEN
+            SET continue_grading ← FALSE
+        END IF
+
+    END WHILE
+
+ELSE IF current_role EQUALS "coordinator" THEN
+
+    PRINT "Teacher List:"
+
+    FOR EACH username IN users
+        IF users[username][role] EQUALS "teacher" THEN
+            PRINT username + " - " + users[username][name]
+        END IF
+    END FOR
+
+    PRINT "Subject List:"
+
+    FOR EACH subject IN subjects
+        PRINT subject
+    END FOR
+
+    PRINT "Student List with Grades:"
+
+    FOR EACH username IN grades
+        PRINT users[username][name]
+
+        FOR EACH subject IN subjects
+            PRINT subject + ": " + grades[username][subject]
+        END FOR
+
+    END FOR
+
+END IF
+
+# END
