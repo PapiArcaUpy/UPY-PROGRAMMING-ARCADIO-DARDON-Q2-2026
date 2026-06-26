@@ -17,7 +17,7 @@ grades = {
     'aleher': {'Mathematics': 9.0, 'Programming': 8.0, 'English': 8.5},
     'ivanr': {'Mathematics': 7.5, 'Programming': 8.0, 'English': 8.5},
     'keyrap':  {'Mathematics': 9.5, 'Programming': 9.8, 'English': 9.2},
-    'eucc':     {'Mathematics': 8.2, 'Programming': 6.9, 'English': 8.8},
+    'euc':     {'Mathematics': 8.2, 'Programming': 6.9, 'English': 8.8},
     'cbalam':  {'Mathematics': 8.8, 'Programming': 9.0, 'English': 8.5}
 }
 
