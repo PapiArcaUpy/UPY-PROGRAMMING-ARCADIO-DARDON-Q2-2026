@@ -35,7 +35,7 @@ SET current_role ← users[current_user][role]
 
 # OUTPUT
 
-PRINT "Welcome, " + current_name + " (" + current_role + ")"
+PRINT "Welcome, " + current_name
 
 # PROCESS
 
@@ -74,7 +74,10 @@ ELSE IF current_role EQUALS "teacher" THEN
 
         ASK teacher FOR student
 
-        IF student EXISTS IN grades THEN
+        IF student EQUALS "Exit" THEN
+            SET continue_grading ← FALSE
+        
+        ELSE IF student EXISTS IN grades THEN
 
             ASK teacher FOR subject
 
@@ -82,10 +85,10 @@ ELSE IF current_role EQUALS "teacher" THEN
 
                 ASK teacher FOR new_grade
 
-                PRINT "Current grade: " + grades[student][subject]
-                PRINT "New grade: " + new_grade
+                PRINT "Confirm change? (yes/no)"
+                PRINT subject + ": " + grades[student][subject] + " ==> " + new_grade
 
-                ASK teacher TO confirm (yes/no)
+                ASK teacher FOR confirmation
 
                 IF confirmation EQUALS "yes" THEN
                     SET grades[student][subject] ← new_grade
@@ -100,12 +103,6 @@ ELSE IF current_role EQUALS "teacher" THEN
 
         ELSE
             PRINT "Student not found."
-        END IF
-
-        ASK teacher IF wants to grade another student (yes/no)
-
-        IF answer EQUALS "no" THEN
-            SET continue_grading ← FALSE
         END IF
 
     END WHILE
