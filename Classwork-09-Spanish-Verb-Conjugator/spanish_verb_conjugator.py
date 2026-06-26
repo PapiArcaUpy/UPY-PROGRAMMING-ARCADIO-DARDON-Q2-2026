@@ -1,32 +1,28 @@
-#INPUT
-
-pronouns = ["Yo", "Tu", "El", "Nosotros", "Vosotros", "Ellos"]
-
-endings = {
-    "ar": ["o", "as", "a", "amos", "ais", "an"],
-    "er": ["o", "es", "e", "emos", "eis", "en"],
-    "ir": ["o", "es", "e", "imos", "is", "en"]
-}
-
-verb = input("Write a Spanish verb (ar/er/ir): ").lower()
+# INPUT
+accion = input("Ingrese un verbo: ")
 
 # PROCESS
 
-stem = verb[:-2]
-ending = verb[-2:]
+# Lista de pronombres
+personas = ['yo', 'tu', 'el', 'nosotros', 'vosotros', 'ellos']
 
-if ending in endings:
+# Diccionario de terminaciones
+conjugaciones = {
+    'ar': ['o', 'as', 'a', 'amos', 'ais', 'an'],
+    'er': ['o', 'es', 'e', 'emos', 'eis', 'en'],
+    'ir': ['o', 'es', 'e', 'imos', 'is', 'en']
+}
 
-    conjugation = endings[ending]
+# Obtener la raíz y la terminación del verbo
+raiz = accion[:-2]
+tipo = accion[-2:]
 
-    # OUTPUT
+# Buscar las terminaciones correspondientes
+lista_final = conjugaciones[tipo]
 
-    print("\nConjugated verb:\n")
-
-    for i in range(len(pronouns)):
-        print(pronouns[i], stem + conjugation[i])
-
-else:
-    print("Invalid verb. Please enter a verb ending in ar, er, or ir.")
-#AI DECLARATION
-#i only use the ai to help me with the code
+# OUTPUT
+for posicion, persona in enumerate(personas):
+    sufijo = lista_final[posicion]
+    print(f"{persona} {raiz}{sufijo}")
+    #AI DECLARATION
+    #I only use it to help me with the code
