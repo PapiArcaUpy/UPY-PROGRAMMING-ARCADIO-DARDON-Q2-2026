@@ -28,3 +28,5 @@ if ending in endings:
 
 else:
     print("Invalid verb. Please enter a verb ending in ar, er, or ir.")
+#AI DECLARATION
+#i only use the ai to help me with the code
