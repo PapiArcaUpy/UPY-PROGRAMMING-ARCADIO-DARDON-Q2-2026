@@ -40,7 +40,7 @@ current_name = users[current_user]['name']
 current_role = users[current_user]['role']
 
 # OUTPUT
-print('\nWelcome, ' + current_name)
+print('\nWelcome, ' + current_name + ' (' + current_role.capitalize() + ')')
 print('=' * 40)
 
 # PROCESS
@@ -70,7 +70,7 @@ elif current_role == 'teacher':
 
     for username in users:
         if users[username]['role'] == 'student':
-            print(username + ' | ' + users[username]['name'])
+            print(username.ljust(10) + ' | ' + users[username]['name'])
 
     continue_grading = True
 
@@ -112,7 +112,7 @@ elif current_role == 'coordinator':
 
     for username in users:
         if users[username]['role'] == 'teacher':
-            print(username + ' | ' + users[username]['name'])
+            print(username.ljust(10) + ' | ' + users[username]['name'])
 
     print('\nSubject List:')
     print('-' * 40)
@@ -121,17 +121,26 @@ elif current_role == 'coordinator':
         print(subject)
 
     print('\nStudent List with Grades:')
-    print('-' * 40)
+    print('-' * 90)
 
+    header = 'Subject'.ljust(15)
     for username in grades:
-        print(users[username]['name'] + ':')
+        header = header + users[username]['name'].ljust(20)
+    print(header)
+    print('-' * 90)
 
-        for subject in subjects:
-            print('   ' + subject + ': ' + str(grades[username][subject]))
+    for subject in subjects:
+        row = subject.ljust(15)
+        for username in grades:
+            grade = grades[username][subject]
+            grade_text = str(grade)
+            if grade < 8.0:
+                grade_text = grade_text + ' (F)'
+            row = row + grade_text.ljust(20)
+        print(row)
 
 else:
     print('Access type not recognized.')
 
 # AI DECLARATION
 # I used AI to help me understand and improve my code.
-
