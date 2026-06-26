@@ -1,41 +1,22 @@
-# Spanish Verb Conjugator
+INICIO
 
-BEGIN
+    Escribir "Ingrese un verbo:"
+    Leer verbo
 
-# Create the pronouns and verb endings
+    pronombres ← [yo, tu, el, nosotros, vosotros, ellos]
 
-Create a list of Spanish pronouns
+    terminaciones["ar"] ← [o, as, a, amos, ais, an]
+    terminaciones["er"] ← [o, es, e, emos, eis, en]
+    terminaciones["ir"] ← [o, es, e, imos, is, en]
 
-Create a dictionary with the endings for AR, ER, and IR verbs
+    raiz ← verbo sin las últimas dos letras
+    tipo ← las últimas dos letras del verbo
 
-# Ask the user for a verb
+    listaTerminaciones ← terminaciones[tipo]
 
-Ask the user to enter a Spanish verb
+    Para i ← 0 Hasta 5
+        Escribir pronombres[i], raiz, listaTerminaciones[i]
+    FinPara
 
-Convert the verb to lowercase
-
-stem ← remove the last two letters of the verb
-
-ending ← the last two letters of the verb
-
-# Check if the ending is valid
-
-IF ending exists in the dictionary THEN
-
-    conjugation ← corresponding list of endings
-
-    FOR each pronoun
-
-        Display the pronoun and the conjugated verb
-
-    END FOR
-
-ELSE
-
-    Display "Invalid verb. Please enter a verb ending in ar, er, or ir."
-
-END IF
-
-END
-#AI Declaration
-I only use ai to help me with the code
+FIN
+# AI DECLARATION: I USE IT TO HELP ME WITH MY CODE
