@@ -1,0 +1,57 @@
+START
+
+# INPUT: read the grid and iteration parameters from config.txt
+OPEN config.txt for reading
+config ← empty dictionary
+FOR each line in config.txt
+    SPLIT the line into key and value using "="
+    STORE value in config using key
+END FOR
+CLOSE config.txt
+
+width ← config["ancho"]
+height ← config["alto"]
+real_min ← config["real_min"]
+real_max ← config["real_max"]
+imag_min ← config["imag_min"]
+imag_max ← config["imag_max"]
+max_iterations ← config["max_iter"]
+
+# OUTPUT: prepare the CSV file
+
+OPEN mandelbrot.csv for writing
+WRITE "fila,columna,iteraciones" as the header line
+
+# PROCESS: for every point in the grid, map it to a complex number,
+
+FOR row ← 0 TO height - 1
+    FOR column ← 0 TO width - 1
+
+        real_part ← real_min + (column / width) * (real_max - real_min)
+        imag_part ← imag_min + (row / height) * (imag_max - imag_min)
+        c ← complex number made of (real_part, imag_part)
+
+        z ← complex number made of (0, 0)
+        iterations ← 0
+
+        WHILE magnitude of z <= 2 AND iterations < max_iterations
+            z ← (z * z) + c
+            iterations ← iterations + 1
+        END WHILE
+
+        IF iterations = max_iterations THEN
+            mode ← "inside the set (never escaped)"
+        ELSE IF iterations <= 5 THEN
+            mode ← "escaped immediately (far from the set)"
+        ELSE
+            mode ← "escaped slowly (near the boundary)"
+        END IF
+
+        WRITE row, column, iterations to mandelbrot.csv
+    END FOR
+END FOR
+
+CLOSE mandelbrot.csv
+PRINT "Done"
+
+END
