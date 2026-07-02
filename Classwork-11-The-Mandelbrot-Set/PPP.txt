@@ -1,6 +1,6 @@
 START
 
-# INPUT: read the grid and iteration parameters from config.txt
+# INPUT: leer config.txt
 OPEN config.txt for reading
 config ← empty dictionary
 FOR each line in config.txt
@@ -17,13 +17,11 @@ imag_min ← config["imag_min"]
 imag_max ← config["imag_max"]
 max_iterations ← config["max_iter"]
 
-# OUTPUT: prepare the CSV file
-
+# OUTPUT: crear el CSV
 OPEN mandelbrot.csv for writing
 WRITE "fila,columna,iteraciones" as the header line
 
-# PROCESS: for every point in the grid, map it to a complex number,
-
+# PROCESS: recorrer cada punto del grid
 FOR row ← 0 TO height - 1
     FOR column ← 0 TO width - 1
 
@@ -40,11 +38,11 @@ FOR row ← 0 TO height - 1
         END WHILE
 
         IF iterations = max_iterations THEN
-            mode ← "inside the set (never escaped)"
+            mode ← "inside"
         ELSE IF iterations <= 5 THEN
-            mode ← "escaped immediately (far from the set)"
+            mode ← "escaped fast"
         ELSE
-            mode ← "escaped slowly (near the boundary)"
+            mode ← "escaped slow"
         END IF
 
         WRITE row, column, iterations to mandelbrot.csv
