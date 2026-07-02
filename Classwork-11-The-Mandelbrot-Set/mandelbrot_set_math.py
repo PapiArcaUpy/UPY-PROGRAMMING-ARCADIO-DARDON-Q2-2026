@@ -37,3 +37,4 @@ for fila in range(alto):
 
 salida.close()
 print("Done")
+#AI DECLARATION I USE CLAUDE TO FIX MY CODE AND HELP ME WITH THE CHANGES
