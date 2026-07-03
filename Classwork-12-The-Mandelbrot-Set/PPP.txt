@@ -1,0 +1,59 @@
+INICIO
+
+    Definir clave, valor, linea, encabezados, dato Como Cadena
+    Definir archivo, data Como Cadena
+    Definir alto, ancho, maxIter, fila, columna, iteraciones, brillo Como Entero
+    Definir config Como Diccionario
+    Definir datos Como Arreglo
+    Definir img, img_rgb Como Imagen
+
+PROCESO
+
+    Abrir Archivo "config.txt" Como archivo Para Lectura
+    Mientras No Fin_Archivo(archivo) Hacer
+        Leer archivo, linea
+        Separar linea Por "=" En clave, valor
+        Si Contiene(valor, ".") Entonces
+            config[clave] <- ConvertirAReal(valor)
+        Sino
+            config[clave] <- ConvertirAEntero(valor)
+        FinSi
+    FinMientras
+    Cerrar Archivo archivo
+
+    Abrir Archivo "clase.csv" Como data Para Lectura
+    Leer_Todas_Las_Lineas(data, datos)
+    Cerrar Archivo data
+
+    alto <- config["alto"]
+    ancho <- config["ancho"]
+    maxIter <- config["max_iter"]
+
+    img <- CrearImagen("HSV", ancho, alto)
+
+    encabezados <- datos[0]
+    Eliminar_Elemento(datos, 0)
+
+    Para Cada dato En datos Hacer
+        Separar dato Por "," En fila, columna, iteraciones
+        fila <- ConvertirAEntero(fila)
+        columna <- ConvertirAEntero(columna)
+        iteraciones <- ConvertirAEntero(iteraciones)
+
+        Si iteraciones == maxIter Entonces
+            brillo <- 0
+        Sino
+            brillo <- ConvertirAEntero((iteraciones / maxIter) * 255)
+        FinSi
+
+        PutPixel(img, columna, fila, brillo, 255, 255)
+    FinPara
+
+    img_rgb <- ConvertirImagen(img, "RGB")
+    GuardarImagen(img_rgb, "mandelbrot-clase.png")
+
+SALIDA
+
+    Escribir "DONE"
+
+FIN
