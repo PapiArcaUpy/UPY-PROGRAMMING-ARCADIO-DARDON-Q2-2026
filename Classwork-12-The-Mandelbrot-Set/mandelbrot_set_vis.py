@@ -31,3 +31,4 @@ img_rgb = img.convert('RGB')
 img_rgb.save("mandelbrot-clase.png")
 
 print("DONE")
+#AI DECLARATION I DONT USE AI IN THIS ACTIVITY
