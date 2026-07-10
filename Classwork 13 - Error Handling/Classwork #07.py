@@ -1,40 +1,46 @@
-class   DigitoVerificadorError(Exception):
+class DigitoVerificadorError(Exception):
     pass
 
 
-check=True
-while check:
-    try:
-        rol = input("Ingrese el rol: ")
-        rol_sin_digito, digito = rol.split("-")
-        check=False
-    except ValueError:
-        print("Rol incorrecto")
+rol = input("Ingrese el rol: ")
 
-invertido = rol_sin_digito[::-1]
+partes = rol.split("-")
 
-try:
-    if not invertido.isnumeric():
-        raise ValueError(f"{invertido} tiene caracteres no númericos")
-except ValueError as e:
-    print(e)
-
-secuencia =[2,3,4,5,6,7]
-suma=0
-
-for index in range (len(invertido)):
-    multiplicando=secuencia[index % 6]
-    numero=int(invertido[index:index+1])
-    suma+=numero * multiplicando
-    
-total=suma%11
-
-verificador= 11- total
-
-try:
-    if verificador != int(digito):
-        raise DigitoVerificadorError(f"El digito verificador no coincide, {verificador}")
-except DigitoVerificadorError as e:
-    print(e)
+if len(partes) != 2:
+    print("Rol inválido: No tiene el formato XXXXXXXXX-X")
 else:
-    print(f"{rol_sin_digito}-{verificador}")
+    rol_sin_digito, digito = partes
+
+    if not rol_sin_digito.isnumeric():
+        print("Los digitos del rol deben ser numéricos")
+    elif not digito.isnumeric():
+        print("El digito verificador debe ser numérico")
+    else:
+        invertido = rol_sin_digito[::-1]
+        secuencia = [2, 3, 4, 5, 6, 7]
+        suma = 0
+
+        for index in range(len(invertido)):
+            multiplicando = secuencia[index % 6]
+            numero = int(invertido[index])
+            suma += numero * multiplicando
+
+        total = suma % 11
+        verificador = 11 - total
+
+        if verificador == 11:
+            verificador = 0
+        elif verificador == 10:
+            verificador = "K"
+
+        try:
+            if str(verificador) != digito:
+                raise DigitoVerificadorError(
+                    f"Error: El dígito verificador no conicide, se esperaba {verificador}"
+                )
+        except DigitoVerificadorError as e:
+            print(e)
+        else:
+            print(f"{rol_sin_digito}-{digito}")
+
+#AI DECLARATION I USE IT TO HELP ME WITH MY CODE
