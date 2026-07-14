@@ -1,0 +1,81 @@
+class ConfigError(Exception):
+    pass
+
+
+try:
+    from PIL import Image
+except ImportError:
+    print("Error: The Pillow library (PIL) is not installed. Run: pip install Pillow")
+else:
+
+    # INPUT: read config.txt
+    config = {}
+
+    try:
+        archivo = open("config.txt", 'r')
+    except FileNotFoundError:
+        print("Error: config.txt file was not found.")
+    else:
+        try:
+            for linea in archivo:
+                linea = linea.strip()
+                if linea == "":
+                    continue
+                clave, valor = linea.split("=")
+                config[clave] = float(valor) if "." in valor else int(valor)
+        except ValueError:
+            print("Error: config.txt has an invalid line (expected 'key=value').")
+            config = {}
+        finally:
+            archivo.close()
+
+        # INPUT: read clase.csv
+        datos = None
+        try:
+            if not config:
+                raise ConfigError("Error: config.txt is empty or could not be read.")
+
+            with open("clase.csv", 'r') as data:
+                datos = data.readlines()
+
+            alto, ancho, max_iter = config["alto"], config["ancho"], config["max_iter"]
+
+            if not datos:
+                raise ConfigError("Error: clase.csv is empty.")
+
+        except FileNotFoundError:
+            print("Error: clase.csv file was not found.")
+        except KeyError as e:
+            print(f"Error: Missing key {e} in config.txt")
+        except ConfigError as e:
+            print(e)
+        else:
+            try:
+                img = Image.new("HSV", (ancho, alto))
+
+                encabezados = datos.pop(0)
+
+                for dato in datos:
+                    dato = dato.strip()
+                    if dato == "":
+                        continue
+                    fila, columna, iteraciones = map(int, dato.split(","))
+                    brillo = 0 if (iteraciones == max_iter) else int((iteraciones / max_iter) * 255)
+                    img.putpixel((columna, fila), (brillo, 255, 255))
+
+            except ValueError:
+                print("Error: clase.csv has an invalid line (expected 'fila,columna,iteraciones').")
+            except IndexError:
+                print("Error: A pixel coordinate in clase.csv is outside the image size.")
+            else:
+                # OUTPUT: save the image
+                try:
+                    img_rgb = img.convert('RGB')
+                    img_rgb.save("mandelbrot-clase.png")
+                except OSError:
+                    print("Error: Could not save mandelbrot-clase.png")
+                else:
+                    print("DONE")
+
+# AI DECLARATION
+# I use Claude to help me add error handling to this activity.
