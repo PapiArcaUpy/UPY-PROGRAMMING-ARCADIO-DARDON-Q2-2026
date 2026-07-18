@@ -118,3 +118,4 @@ print(f"After insertion sort: {numbers}")
 numbers = [random.randint(0, 100) for _ in range(10)]
 print(f"Before selection sort: {numbers}")
 selection_sort_animated(numbers)
+#AI DECLARATION I didn't use ai
