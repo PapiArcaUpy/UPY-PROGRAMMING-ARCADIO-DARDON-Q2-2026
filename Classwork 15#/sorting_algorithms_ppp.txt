@@ -1,0 +1,227 @@
+```
+PPP - Pseudocode Programming Process
+
+
+1. BUBBLE SORT
+
+INPUT
+GET numbers FROM caller
+
+PROCESS
+n ← length of numbers
+
+FOR sweep FROM 0 TO n - 1 DO
+    FOR pair FROM 0 TO n - 2 - sweep DO
+
+        IF numbers[pair] > numbers[pair + 1] THEN
+            temp            ← numbers[pair]
+            numbers[pair]   ← numbers[pair + 1]
+            numbers[pair+1] ← temp
+        ENDIF
+
+    ENDFOR
+ENDFOR
+
+
+2. INSERTION SORT
+
+INPUT
+GET numbers FROM caller
+
+PROCESS
+n ← length of numbers
+
+FOR i FROM 1 TO n - 1 DO
+
+    j ← i
+
+    WHILE j > 0 AND numbers[j - 1] > numbers[j] DO
+        temp           ← numbers[j - 1]
+        numbers[j - 1] ← numbers[j]
+        numbers[j]     ← temp
+        j ← j - 1
+    ENDWHILE
+
+ENDFOR
+
+OUTPUT
+RETURN numbers
+
+
+3. SELECTION SORT
+
+INPUT
+GET numbers FROM caller
+
+PROCESS
+n ← length of numbers
+
+FOR i FROM 0 TO n - 1 DO
+
+    min_index ← i
+
+    FOR j FROM i + 1 TO n - 1 DO
+        IF numbers[j] < numbers[min_index] THEN
+            min_index ← j
+        ENDIF
+    ENDFOR
+
+    temp                ← numbers[i]
+    numbers[i]          ← numbers[min_index]
+    numbers[min_index]  ← temp
+
+ENDFOR
+
+
+4. DRAW_BARS (visualization helper)
+
+INPUT
+GET numbers FROM caller
+GET selected FROM caller WITH default value empty
+
+PROCESS
+CLEAR canvas
+n ← length of numbers
+bar_width ← 10.0 / n
+
+FOR i FROM 0 TO n - 1 DO
+
+    number ← numbers[i]
+    x ← i * bar_width + bar_width / 2
+
+    IF i IS IN selected THEN
+        color ← red
+    ELSE
+        color ← blue
+    ENDIF
+
+    OUTPUT
+    DRAW filled rectangle AT x WITH width bar_width * 0.9 AND height number IN color
+
+ENDFOR
+
+SHOW canvas WITH delay 100
+
+
+5. BUBBLE SORT ANIMATED
+
+INPUT
+GET numbers FROM caller
+
+PROCESS
+SET canvas x-scale FROM -0.1 TO 10
+SET canvas y-scale FROM -0.5 TO max(numbers) + 1
+n ← length of numbers
+
+FOR sweep FROM 0 TO n - 1 DO
+
+    swapped ← FALSE
+
+    FOR pair FROM 0 TO n - 2 - sweep DO
+
+        CALL draw_bars(numbers, selected ← [pair, pair + 1])
+
+        IF numbers[pair] > numbers[pair + 1] THEN
+            temp            ← numbers[pair]
+            numbers[pair]   ← numbers[pair + 1]
+            numbers[pair+1] ← temp
+            swapped ← TRUE
+        ENDIF
+
+        CALL draw_bars(numbers, selected ← [pair, pair + 1])
+
+    ENDFOR
+
+    IF swapped = FALSE THEN
+        BREAK
+    ENDIF
+
+ENDFOR
+
+OUTPUT
+CALL draw_bars(numbers)
+SHOW canvas
+
+
+6. INSERTION SORT ANIMATED
+
+INPUT
+GET numbers FROM caller
+
+PROCESS
+SET canvas x-scale FROM -0.1 TO 10
+SET canvas y-scale FROM -0.5 TO max(numbers) + 1
+n ← length of numbers
+
+FOR i FROM 1 TO n - 1 DO
+
+    j ← i
+    CALL draw_bars(numbers, selected ← [j])
+
+    WHILE j > 0 AND numbers[j - 1] > numbers[j] DO
+        temp           ← numbers[j - 1]
+        numbers[j - 1] ← numbers[j]
+        numbers[j]     ← temp
+        j ← j - 1
+        CALL draw_bars(numbers, selected ← [j, j + 1])
+    ENDWHILE
+
+ENDFOR
+
+OUTPUT
+CALL draw_bars(numbers)
+SHOW canvas
+
+
+7. SELECTION SORT ANIMATED
+
+INPUT
+GET numbers FROM caller
+
+PROCESS
+SET canvas x-scale FROM -0.1 TO 10
+SET canvas y-scale FROM -0.5 TO max(numbers) + 1
+n ← length of numbers
+
+FOR i FROM 0 TO n - 1 DO
+
+    min_index ← i
+
+    FOR j FROM i + 1 TO n - 1 DO
+        CALL draw_bars(numbers, selected ← [i, min_index, j])
+        IF numbers[j] < numbers[min_index] THEN
+            min_index ← j
+        ENDIF
+    ENDFOR
+
+    temp                ← numbers[i]
+    numbers[i]          ← numbers[min_index]
+    numbers[min_index]  ← temp
+    CALL draw_bars(numbers, selected ← [i])
+
+ENDFOR
+
+OUTPUT
+CALL draw_bars(numbers)
+SHOW canvas
+
+
+MAIN PROGRAM
+
+PROCESS
+numbers ← 10 random integers between 0 and 100
+
+OUTPUT
+DISPLAY "Before bubble sort: " + numbers
+CALL bubble_sort_animated(numbers)
+DISPLAY "After bubble sort: " + numbers
+
+numbers ← 10 random integers between 0 and 100
+DISPLAY "Before insertion sort: " + numbers
+CALL insertion_sort_animated(numbers)
+DISPLAY "After insertion sort: " + numbers
+
+numbers ← 10 random integers between 0 and 100
+DISPLAY "Before selection sort: " + numbers
+CALL selection_sort_animated(numbers)
+```
